@@ -1,6 +1,4 @@
-﻿/* CSS personalizzato per migliorare l'estetica della pagina */
-
-/* Stile generale della pagina */
+﻿/* Stile generale della pagina */
 body {
     background-color: #f8f9fa; /* Un colore di sfondo leggero */
     font-family: 'Arial', sans-serif; /* Un font leggibile */
@@ -8,24 +6,24 @@ body {
 
 /* Intestazione e descrizione */
 h2 {
-    color: #343a40; /* Colore del testo scuro per un buon contrasto */
+    color: #343a40; 
     margin-bottom: 0.5rem;
 }
 
 p {
-    color: #6c757d; /* Colore del testo secondario */
+    color: #6c757d; 
 }
 
 /* Card del preventivo */
 .card {
     margin-bottom: 5rem;
     background-color: rgba(255,255,255, 0.2);
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Ombra per dare profondità */
-    border: none; /* Rimuove il bordo di default */
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); 
+    border: none; 
 }
 
     .card .card-title {
-        color: #007bff; /* Colore primario per i titoli */
+        color: #007bff; 
     }
 
     .card .btn-outline-secondary {
@@ -40,8 +38,8 @@ p {
 
 /* Stile dei dropdown */
 .form-control {
-    border-radius: 0.25rem; /* Bordi arrotondati per i dropdown */
-    border: 1px solid #ced4da; /* Bordi con un colore definito */
+    border-radius: 0.25rem; 
+    border: 1px solid #ced4da; 
 }
 
 /* Stile per i checkbox */
@@ -52,8 +50,8 @@ p {
 
 /* Stile per i bottoni */
 .btn {
-    border-radius: 0.25rem; /* Bordi arrotondati per i bottoni */
-    padding: 0.5rem 1rem; /* Padding per allargare i bottoni */
+    border-radius: 0.25rem; 
+    padding: 0.5rem 1rem;
 }
 
 /* Rende i controlli della form responsive */

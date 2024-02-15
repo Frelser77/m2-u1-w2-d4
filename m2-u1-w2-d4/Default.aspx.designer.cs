@@ -42,13 +42,58 @@ namespace m2_u1_w2_d4
         protected global::System.Web.UI.WebControls.DropDownList ddlAnniGaranzia;
 
         /// <summary>
-        /// Controllo btnCalcola.
+        /// Controllo btnHiddenForOptional.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCalcola;
+        protected global::System.Web.UI.WebControls.Button btnHiddenForOptional;
+
+        /// <summary>
+        /// Controllo preventivoCard.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl preventivoCard;
+
+        /// <summary>
+        /// Controllo prezzoBaseLiteral.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal prezzoBaseLiteral;
+
+        /// <summary>
+        /// Controllo prezzoOptionalLiteral.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal prezzoOptionalLiteral;
+
+        /// <summary>
+        /// Controllo prezzoGaranziaLiteral.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal prezzoGaranziaLiteral;
+
+        /// <summary>
+        /// Controllo prezzoTotaleLiteral.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal prezzoTotaleLiteral;
 
         /// <summary>
         /// Controllo testoPreventivo.

@@ -12,6 +12,7 @@ namespace m2_u1_w2_d4
         {
             if (!IsPostBack)
             {
+
                 CaricaAutomobili();
                 CaricaAnniGaranzia();
                 CaricaOptional();
@@ -19,32 +20,42 @@ namespace m2_u1_w2_d4
         }
 
         // metodo per gestire il click del bottone e calcolare il preventivo
-        protected void BtnCalcola_Click(object sender, EventArgs e)
-        {
-            int autoId = int.Parse(Automobili.SelectedValue);
-            decimal prezzoBase = TrovaPrezzoBaseAuto(autoId);
-            decimal prezzoOptional = CalcolaPrezzoOptional();
-            int anniGaranzia = int.Parse(ddlAnniGaranzia.SelectedValue);
-            decimal prezzoGaranzia = anniGaranzia * 120;
-            decimal prezzoTotale = prezzoBase + prezzoOptional + prezzoGaranzia;
+        /* protected void BtnCalcola_Click(object sender, EventArgs e)
+         {
+             int autoId;
+             if (int.TryParse(Automobili.SelectedValue, out autoId))
+             {
+                 autoId = int.Parse(Automobili.SelectedValue);
+                 decimal prezzoBase = TrovaPrezzoBaseAuto(autoId);
+                 decimal prezzoOptional = CalcolaPrezzoOptional();
+                 int anniGaranzia = int.Parse(ddlAnniGaranzia.SelectedValue);
+                 decimal prezzoGaranzia = anniGaranzia * 120;
+                 decimal prezzoTotale = prezzoBase + prezzoOptional + prezzoGaranzia;
 
-            // Imposta il path dell'immagine e il testo del preventivo
-            string selectedImagePath = GetImagePathFromDatabase(autoId);
+                 // Aggiorna il path dell'immagine
+                 string selectedImagePath = GetImagePathFromDatabase(autoId);
+                 imgAuto.ImageUrl = !string.IsNullOrEmpty(selectedImagePath) ? ResolveUrl(selectedImagePath) : ResolveUrl("~/Content/images/default.png");
 
-            if (!string.IsNullOrEmpty(selectedImagePath))
-            {
-                imgAuto.ImageUrl = ResolveUrl(selectedImagePath);
-            }
-            else
-            {
-                imgAuto.ImageUrl = ResolveUrl("~/Content/images/default.png");
-            }
+                 // Aggiorna i campi della card con i dettagli del preventivo
+                 prezzoBaseLiteral.Text = prezzoBase == 0 ? string.Empty : $"Prezzo di base del modello scelto: {prezzoBase:C}";
+                 prezzoOptionalLiteral.Text = prezzoOptional == 0 ? string.Empty : $"Totale degli optional scelti: {prezzoOptional:C}";
+                 prezzoGaranziaLiteral.Text = $"Totale della garanzia ({anniGaranzia} anni): {prezzoGaranzia:C}";
+                 prezzoTotaleLiteral.Text = $"<strong>Totale complessivo: {prezzoTotale:C}</strong>";
 
-            testoPreventivo.Text = $"Prezzo di base del modello scelto: {prezzoBase:C}<br/>" +
-                                   $"Totale degli optional scelti: {prezzoOptional:C}<br/>" +
-                                   $"Totale della garanzia ({anniGaranzia} anni): {prezzoGaranzia:C}<br/>" +
-                                   $"<strong>Totale complessivo: {prezzoTotale:C}</strong>";
-        }
+
+                 // Rendi visibile la card
+                 preventivoCard.Visible = true;
+             }
+             else
+             {
+                 // Gestisci il caso in cui non viene selezionata un'auto valida
+                 // Potresti, ad esempio, visualizzare un messaggio di errore
+                 testoPreventivo.Text = "Per favore, seleziona un modello di auto valido.";
+                 preventivoCard.Visible = false; // Nascondi la card del preventivo se non è valida la selezione
+             }
+         }*/
+
+
 
         // Metodo per recuperare il path dell'immagine dell'auto dal database
         private string GetImagePathFromDatabase(int autoId)
@@ -121,8 +132,60 @@ namespace m2_u1_w2_d4
                 CheckBoxListOptional.DataValueField = "ID";
 
                 CheckBoxListOptional.DataBind();
+
+                foreach (ListItem item in CheckBoxListOptional.Items)
+                {
+                    item.Attributes.Add("onclick", "document.getElementById('" + btnHiddenForOptional.ClientID + "').click();");
+
+                }
             }
         }
+
+        private void AggiornaPreventivo()
+        {
+            int autoId = int.Parse(Automobili.SelectedValue);
+            decimal prezzoBase = TrovaPrezzoBaseAuto(autoId);
+            decimal prezzoOptional = CalcolaPrezzoOptional();
+            int anniGaranzia;
+            decimal prezzoGaranzia = 0;
+
+            if (int.TryParse(ddlAnniGaranzia.SelectedValue, out anniGaranzia))
+            {
+                prezzoGaranzia = anniGaranzia * 120;
+            }
+
+            decimal prezzoTotale = prezzoBase + prezzoOptional + prezzoGaranzia;
+
+            // Aggiorna il path dell'immagine
+            string selectedImagePath = GetImagePathFromDatabase(autoId);
+            imgAuto.ImageUrl = !string.IsNullOrEmpty(selectedImagePath) ? ResolveUrl(selectedImagePath) : ResolveUrl("~/Content/images/default.png");
+
+            // Aggiorna i campi della card con i dettagli del preventivo
+            prezzoBaseLiteral.Text = $"Prezzo di base del modello scelto: {prezzoBase:C}";
+            prezzoOptionalLiteral.Text = $"Totale degli optional scelti: {prezzoOptional:C}";
+            prezzoGaranziaLiteral.Text = $"Totale della garanzia ({anniGaranzia} anni): {prezzoGaranzia:C}";
+            prezzoTotaleLiteral.Text = $"<strong>Totale complessivo: {prezzoTotale:C}</strong>";
+
+            // Rendi visibile la card del preventivo
+            preventivoCard.Visible = true;
+        }
+
+
+        protected void UpdatePreventivo(object sender, EventArgs e)
+        {
+            AggiornaPreventivo();
+        }
+
+        protected void CheckBoxListOptional_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AggiornaPreventivo();
+        }
+
+        protected void ddlAnniGaranzia_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AggiornaPreventivo();
+        }
+
 
         // Metodo per trovare il prezzo base dell'auto selezionata
         private decimal TrovaPrezzoBaseAuto(int autoId)
@@ -160,22 +223,24 @@ namespace m2_u1_w2_d4
             // Ottieni l'ID dell'auto selezionata
             int autoId = int.Parse(Automobili.SelectedValue);
 
-            // Ottieni il path dell'immagine dall'ID dell'auto
-            string selectedImagePath = GetImagePathFromDatabase(autoId);
+            // Ottieni il prezzo base dell'auto selezionata
+            decimal prezzoBase = TrovaPrezzoBaseAuto(autoId);
 
             // Imposta l'URL dell'immagine
-            if (!string.IsNullOrEmpty(selectedImagePath))
-            {
-                imgAuto.ImageUrl = ResolveUrl(selectedImagePath);
-            }
-            else
-            {
-                imgAuto.ImageUrl = ResolveUrl("~/Content/images/default.png");
-            }
+            string selectedImagePath = GetImagePathFromDatabase(autoId);
+            imgAuto.ImageUrl = !string.IsNullOrEmpty(selectedImagePath) ? ResolveUrl(selectedImagePath) : ResolveUrl("~/Content/images/default.png");
 
-            // Resetta il testo del preventivo
-            testoPreventivo.Text = "";
+            // Imposta il prezzo base e resetta i campi degli optional e della garanzia ai valori di default
+            prezzoBaseLiteral.Text = $"Prezzo di base del modello scelto: {prezzoBase:C}";
+            prezzoOptionalLiteral.Text = "Totale degli optional scelti: €0,00";
+            prezzoGaranziaLiteral.Text = "Totale della garanzia: €0,00";
+            prezzoTotaleLiteral.Text = $"<strong>Totale complessivo: {prezzoBase:C}</strong>";
+
+            // Rendi visibile la card del preventivo
+            preventivoCard.Visible = true;
         }
+
+
 
     }
 }
